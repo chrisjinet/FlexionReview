@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <h2>Triangle Detector 1.0</h2>
+  <p>Enter the length of line segments of each side:</p>
+  <form>
+    <div class="form-group col-sm-4">
+      <label for="side1">Side 1:</label>
+      <input type="num" class="form-control" id="side1">
+    </div>
+    <div class="form-group col-sm-4">
+      <label for="side2">Side 2:</label>
+      <input type="num" class="form-control" id="side2">
+    </div>
+    <div class="form-group col-sm-4">
+      <label for="side3">Side 3:</label>
+      <input type="num" class="form-control" id="side3">
+    </div>
+  </form>
+  <h2 style="color: green" id="result"></h2>
+</div>
+
+<script>
+  $(document).ready(function(){
+    var detectTriangle = function (side1, side2, side3) {
+      if (side1 + side2 > side3 && side2 + side3 > side1 && side1 + side3 > side2) {
+        if (side1 === side2 && side2 === side3) {
+          return "a equilateral triangle."
+        } 
+        else if (side1 === side2 || side2 === side3 || side1 === side3) {
+          return "a isosceles triangle."
+        }
+        else {
+          return "a scalene triangle."
+        } 
+      }
+      else {
+        return "not a triangle."
+      }      
+    };
+    
+    var updateResult = function () {
+      var result = "";
+      if ($.isNumeric($('#side1').val()) && 
+          $.isNumeric($('#side2').val()) && 
+          $.isNumeric($('#side3').val())) {
+        result = "This is " + detectTriangle(Number($('#side1').val()),
+                                             Number($('#side2').val()),Number($('#side3').val()))
+      }
+
+      $('#result').text(result);  
+    };
+    
+    $('[type=num]').on('change', function(e) {
+      $(e.target).val($(e.target).val().replace(/[^\d\.]/g, ''));
+	  updateResult();
+    })
+
+    $('[type=num]').on('keypress', function(e) {
+      keys = ['0','1','2','3','4','5','6','7','8','9','.'];
+      return keys.indexOf(event.key) > -1;
+    })
+    
+    $('[type=num]').on('keyup', function(e) {
+      updateResult();
+    })
+  });
+
+
+</script>
+
+</body>
+</html>
